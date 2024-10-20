@@ -16,8 +16,7 @@ pid_t CreateChild(){
     exit(EXIT_FAILURE);
 }
 
-void Exec(const char * pathToChild){
-    pathToChild = "/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/build/child";
+void Exec(const char * pathToChild){;
     if (execl(pathToChild, pathToChild, nullptr) == -1){
         perror("Не исполняется exec");
         exit(EXIT_FAILURE);

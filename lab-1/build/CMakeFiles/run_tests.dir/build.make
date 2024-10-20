@@ -83,19 +83,51 @@ CMakeFiles/run_tests.dir/tests/tests.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/run_tests.dir/tests/tests.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/tests/tests.cpp -o CMakeFiles/run_tests.dir/tests/tests.cpp.s
 
+CMakeFiles/run_tests.dir/src/parent.cpp.o: CMakeFiles/run_tests.dir/flags.make
+CMakeFiles/run_tests.dir/src/parent.cpp.o: /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/parent.cpp
+CMakeFiles/run_tests.dir/src/parent.cpp.o: CMakeFiles/run_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/run_tests.dir/src/parent.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/run_tests.dir/src/parent.cpp.o -MF CMakeFiles/run_tests.dir/src/parent.cpp.o.d -o CMakeFiles/run_tests.dir/src/parent.cpp.o -c /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/parent.cpp
+
+CMakeFiles/run_tests.dir/src/parent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/run_tests.dir/src/parent.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/parent.cpp > CMakeFiles/run_tests.dir/src/parent.cpp.i
+
+CMakeFiles/run_tests.dir/src/parent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/run_tests.dir/src/parent.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/parent.cpp -o CMakeFiles/run_tests.dir/src/parent.cpp.s
+
+CMakeFiles/run_tests.dir/src/utils.cpp.o: CMakeFiles/run_tests.dir/flags.make
+CMakeFiles/run_tests.dir/src/utils.cpp.o: /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/utils.cpp
+CMakeFiles/run_tests.dir/src/utils.cpp.o: CMakeFiles/run_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/run_tests.dir/src/utils.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/run_tests.dir/src/utils.cpp.o -MF CMakeFiles/run_tests.dir/src/utils.cpp.o.d -o CMakeFiles/run_tests.dir/src/utils.cpp.o -c /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/utils.cpp
+
+CMakeFiles/run_tests.dir/src/utils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/run_tests.dir/src/utils.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/utils.cpp > CMakeFiles/run_tests.dir/src/utils.cpp.i
+
+CMakeFiles/run_tests.dir/src/utils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/run_tests.dir/src/utils.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/utils.cpp -o CMakeFiles/run_tests.dir/src/utils.cpp.s
+
 # Object files for target run_tests
 run_tests_OBJECTS = \
-"CMakeFiles/run_tests.dir/tests/tests.cpp.o"
+"CMakeFiles/run_tests.dir/tests/tests.cpp.o" \
+"CMakeFiles/run_tests.dir/src/parent.cpp.o" \
+"CMakeFiles/run_tests.dir/src/utils.cpp.o"
 
 # External object files for target run_tests
 run_tests_EXTERNAL_OBJECTS =
 
 run_tests: CMakeFiles/run_tests.dir/tests/tests.cpp.o
+run_tests: CMakeFiles/run_tests.dir/src/parent.cpp.o
+run_tests: CMakeFiles/run_tests.dir/src/utils.cpp.o
 run_tests: CMakeFiles/run_tests.dir/build.make
 run_tests: /opt/homebrew/lib/libgtest_main.a
 run_tests: /opt/homebrew/lib/libgtest.a
 run_tests: CMakeFiles/run_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable run_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable run_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/run_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

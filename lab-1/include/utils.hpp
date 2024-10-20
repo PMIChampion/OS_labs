@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sstream>
-#include <algorithm>
 #include <sys/wait.h>
 #include <iostream>
 #include <string>

@@ -26,7 +26,7 @@ void ParentProcess(const char * pathToChild, std::istream & streamIn, std::ostre
         close(Parent_Child[0]);  
         close(Child_Parent[1]);
 
-        Exec("/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/build/child");
+        Exec(pathToChild);
     }else{
         close(Parent_Child[0]);
         close(Child_Parent[1]);
@@ -42,9 +42,8 @@ void ParentProcess(const char * pathToChild, std::istream & streamIn, std::ostre
         while ((bytesRead = read(Child_Parent[0], buffer, sizeof(buffer))) > 0) {
             streamOut.write(buffer, bytesRead);
         }
-        close(Child_Parent[0]);  // Закрываем конец для чтения
+        close(Child_Parent[0]); 
 
-        // Ожидание завершения дочернего процесса
         int status;
         wait(&status);
     }

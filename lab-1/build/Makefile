@@ -219,6 +219,7 @@ src/parent.o: src/parent.cpp.o
 # target to build an object file
 src/parent.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab-1.dir/build.make CMakeFiles/lab-1.dir/src/parent.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/run_tests.dir/build.make CMakeFiles/run_tests.dir/src/parent.cpp.o
 .PHONY : src/parent.cpp.o
 
 src/parent.i: src/parent.cpp.i
@@ -227,6 +228,7 @@ src/parent.i: src/parent.cpp.i
 # target to preprocess a source file
 src/parent.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab-1.dir/build.make CMakeFiles/lab-1.dir/src/parent.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/run_tests.dir/build.make CMakeFiles/run_tests.dir/src/parent.cpp.i
 .PHONY : src/parent.cpp.i
 
 src/parent.s: src/parent.cpp.s
@@ -235,6 +237,7 @@ src/parent.s: src/parent.cpp.s
 # target to generate assembly for a file
 src/parent.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab-1.dir/build.make CMakeFiles/lab-1.dir/src/parent.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/run_tests.dir/build.make CMakeFiles/run_tests.dir/src/parent.cpp.s
 .PHONY : src/parent.cpp.s
 
 src/utils.o: src/utils.cpp.o
@@ -243,6 +246,7 @@ src/utils.o: src/utils.cpp.o
 # target to build an object file
 src/utils.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab-1.dir/build.make CMakeFiles/lab-1.dir/src/utils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/run_tests.dir/build.make CMakeFiles/run_tests.dir/src/utils.cpp.o
 .PHONY : src/utils.cpp.o
 
 src/utils.i: src/utils.cpp.i
@@ -251,6 +255,7 @@ src/utils.i: src/utils.cpp.i
 # target to preprocess a source file
 src/utils.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab-1.dir/build.make CMakeFiles/lab-1.dir/src/utils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/run_tests.dir/build.make CMakeFiles/run_tests.dir/src/utils.cpp.i
 .PHONY : src/utils.cpp.i
 
 src/utils.s: src/utils.cpp.s
@@ -259,6 +264,7 @@ src/utils.s: src/utils.cpp.s
 # target to generate assembly for a file
 src/utils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab-1.dir/build.make CMakeFiles/lab-1.dir/src/utils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/run_tests.dir/build.make CMakeFiles/run_tests.dir/src/utils.cpp.s
 .PHONY : src/utils.cpp.s
 
 tests/tests.o: tests/tests.cpp.o

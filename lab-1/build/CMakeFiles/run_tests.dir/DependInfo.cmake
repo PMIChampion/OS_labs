@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/parent.cpp" "CMakeFiles/run_tests.dir/src/parent.cpp.o" "gcc" "CMakeFiles/run_tests.dir/src/parent.cpp.o.d"
+  "/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/src/utils.cpp" "CMakeFiles/run_tests.dir/src/utils.cpp.o" "gcc" "CMakeFiles/run_tests.dir/src/utils.cpp.o.d"
   "/Users/vladislavburdinskij/Documents/lab_OS/OS_labs/lab-1/tests/tests.cpp" "CMakeFiles/run_tests.dir/tests/tests.cpp.o" "gcc" "CMakeFiles/run_tests.dir/tests/tests.cpp.o.d"
   )
 
