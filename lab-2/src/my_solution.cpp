@@ -21,7 +21,7 @@ void* matrix_erosion(void* arg){
     int m_cols = data -> cols;
     std::cout << "Поток обрабатывает строки с " << data->start_row 
               << " по " << data->end_row << std::endl;
-    for (int i = data -> start_row; i < data -> end_row; ++i){
+    for (int i = data -> start_row; i <= data -> end_row; ++i){
         for (int j = 0; j < m_cols; ++j){
             bool flag = false;
 

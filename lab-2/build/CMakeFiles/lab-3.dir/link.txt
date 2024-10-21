@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc liblab-3.a "CMakeFiles/lab-3.dir/src/my_solution.cpp.o"
-/Library/Developer/CommandLineTools/usr/bin/ranlib liblab-3.a

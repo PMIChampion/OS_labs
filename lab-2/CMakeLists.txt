@@ -1,25 +1,39 @@
 cmake_minimum_required(VERSION 3.10)
-project(My_nums_project)
+project(lab-2)
 
-# Установка стандарта C++
-set(CMAKE_CXX_STANDARD 20)
+# Устанавливаем стандарт C++
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Установка путей для заголовочных файлов и исходных файлов
-set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+# Включаем директорию include/
+include_directories(include)
 
-# Указание компилятору, где искать заголовочные файлы
-include_directories(${INCLUDE_DIR})
+# Добавляем исходные файлы
+set(SOURCES
+    src/my_solution.cpp
+    main.cpp
+)
 
-# Автоматический поиск всех .cpp файлов в папке src
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${SOURCE_DIR}/*.cpp)
+# Основной исполняемый файл
+add_executable(main ${SOURCES})
+target_link_libraries(main pthread)
 
-# Создание библиотеки
-add_library(lab-3 ${SOURCES})
+# Подключаем Google Test через FetchContent
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+)
+# Предотвращаем переопределение настроек компилятора/линкера родительского проекта
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
-# Создание исполняемого файла, предположительно main.cpp лежит в корневой директории
-add_executable(lab-3_exe main.cpp)
+# Добавляем тесты
+add_executable(run_tests tests/test.cpp src/my_solution.cpp)
+target_link_libraries(run_tests gtest pthread)
 
-# Линковка библиотеки с исполняемым файлом
-target_link_libraries(lab-3_exe PRIVATE lab-3)
+# Добавляем пути к заголовочным файлам Google Test
+target_include_directories(run_tests PRIVATE
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+)
