@@ -1,5 +1,0 @@
-if(EXISTS "/Users/vladislavburdinskij/Documents/OS_Labs/OS_labs/lab-3/build/tests[1]_tests.cmake")
-  include("/Users/vladislavburdinskij/Documents/OS_Labs/OS_labs/lab-3/build/tests[1]_tests.cmake")
-else()
-  add_test(tests_NOT_BUILT tests_NOT_BUILT)
-endif()
