@@ -1,63 +1,69 @@
 #include "child.hpp"
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <stdexcept>
 #include "utils.hpp"
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <stdexcept>
+#include <semaphore.h>
+#include <fcntl.h>
+#include <cstring>
 
 int calculation(int num1, int num2, int num3) {
-    if (num2 == 0 || num3 == 0) {
-        throw std::runtime_error("Деление на ноль");
-    }
+    if (num2 == 0 || num3 == 0) throw std::runtime_error("Деление на ноль");
     return num1 / num2 / num3;
 }
 
 int main() {
     constexpr auto shm_name = "/shared_memory";
-    size_t shm_size = 1024;
-    void* addr = CreateFileMapping(shm_name, shm_size);
-    if (addr == MAP_FAILED) {
-        std::cerr << "Child: Ошибка CreateFileMapping\n";
-        return EXIT_FAILURE;
+    constexpr size_t shm_size = 1024;
+
+    char* shared_data = static_cast<char*>(CreateFileMapping(shm_name, shm_size));
+    if (shared_data == MAP_FAILED) {
+        perror("Child: Ошибка подключения к общей памяти");
+        exit(EXIT_FAILURE);
     }
-    char* shared_data = static_cast<char*>(addr);
 
-    std::string input(shared_data);
-    std::stringstream ss(input);
-    std::string line;
-    std::string result;
+    sem_t* sem_child = sem_open("/sem_child", 0);
+    sem_t* sem_parent = sem_open("/sem_parent", 0);
+    if (sem_child == SEM_FAILED || sem_parent == SEM_FAILED) {
+        perror("Child: Ошибка открытия семафоров");
+        CloseFileMapping(shm_name, shared_data, shm_size);
+        exit(EXIT_FAILURE);
+    }
 
-    while (std::getline(ss, line)) {
-        std::stringstream line_ss(line);
+    while (true) {
+        sem_wait(sem_child);
+
+        std::string input(shared_data);
+
+        if (input == "exit") {
+            sem_post(sem_parent);
+            break;
+        }
+
+        std::stringstream ss(input);
         int num1, num2, num3;
-        if (line_ss >> num1 >> num2 >> num3) {
+        std::string result;
+
+        if (ss >> num1 >> num2 >> num3) {
             try {
-                int calc_result = calculation(num1, num2, num3);
-                result += "Результат: " + std::to_string(calc_result) + "\n";
-            } catch (const std::runtime_error& e) {
-                result += e.what();
-                result += "\n";
+                int res = calculation(num1, num2, num3);
+                result = "Результат: " + std::to_string(res);
+            } catch (const std::exception& e) {
+                result = e.what();
             }
         } else {
-            result += "Некорректный ввод\n";
+            result = "Некорректный ввод";
         }
+
+        strncpy(shared_data, result.c_str(), shm_size);
+
+        sem_post(sem_parent);
     }
 
-    if (result.size() >= shm_size) {
-        std::cerr << "Не хватка памяти\n";
-        CloseFileMapping(shm_name, addr, shm_size);
-        return EXIT_FAILURE;
-    }
-    std::strncpy(shared_data, result.c_str(), shm_size);
+    CloseFileMapping(shm_name, shared_data, shm_size);
+    sem_close(sem_child);
+    sem_close(sem_parent);
 
-    std::ofstream outfile("result.txt");
-    if (outfile) {
-        outfile << result;
-        outfile.close();
-    }
-
-    CloseFileMapping(shm_name, addr, shm_size);
-    std::cout << "Child process finished.\n";
     return 0;
 }

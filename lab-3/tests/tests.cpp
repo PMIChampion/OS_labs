@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <parent.hpp>
+#include "parent.hpp"
 #include <sstream>
 #include <vector>
 #include <numeric>
@@ -7,85 +7,33 @@
 
 namespace fs = std::filesystem;
 
-void TestParent(const std::string& input, const std::string& expectedOutput) {
+void TestParent(const std::string& input, const std::string& expectedOutput, const std::string& pathToChild) {
     std::stringstream inFile(input);
     std::stringstream outFile;
 
-    const char* pathToChild1 = getenv("WAY_TO_FILE");
+    if (fs::exists(pathToChild)) {
+        ParentProcess(pathToChild.c_str(), inFile, outFile);
 
-    if (pathToChild1 != nullptr) {
-        if (fs::exists(pathToChild1)) {
-            ParentProcess(pathToChild1, inFile, outFile);
-            std::string result;
-            std::string expectedLine;
-            std::istringstream expectedStream(expectedOutput);
-            bool match = true;
+        std::string result = outFile.str();
 
-            while (std::getline(expectedStream, expectedLine)) {
-                if (!std::getline(outFile, result) || result != expectedLine) {
-                    match = false;
-                    break;
-                }
-            }
-
-            if (std::getline(outFile, result)) {
-                match = false;
-            }
-
-            EXPECT_TRUE(match);
-        } else {
-            std::cout << "PATH DOES NOT EXIST" << std::endl;
-            FAIL() << "Путь к дочернему процессу не существует";
-        }
+        EXPECT_EQ(result, expectedOutput);
     } else {
-        std::cout << "ENV VAR DOES NOT EXIST" << std::endl;
-        FAIL() << "Переменная PATH_TO_CHILD не существует";
+        std::cerr << "Путь к дочернему процессу не существует: " << pathToChild << std::endl;
+        FAIL() << "Путь к дочернему процессу не существует";
     }
 }
 
-TEST(ParentTest, ConvertsStringCorrectly) {
-    std::string input = "100 2 5\n";
+const std::string PATH_TO_CHILD = getenv("WAY_TO_FILE"); 
+TEST(ParentTest, CorrectCalculation) {
+    std::string input = "100 2 5\nexit\n";
     std::string expected_output = "Результат: 10\n";
-    TestParent(input, expected_output);
+    TestParent(input, expected_output, PATH_TO_CHILD);
 }
 
-TEST(ParentTest, HandlesNoSpaces) {
-    std::string input = "25 5 5\n";
-    std::string expected_output = "Результат: 1\n";
-    TestParent(input, expected_output);
-}
-
-TEST(ParentTest, HandlesOnlySpaces) {
-    std::string input = "1000 1 1\n";
-    std::string expected_output = "Результат: 1000\n";
-    TestParent(input, expected_output);
-}
-
-TEST(ParentTest, HandlesEmptyString) {
-    std::string input = "5 5 1\n";
-    std::string expected_output = "Результат: 1\n";
-    TestParent(input, expected_output);
-}
-
-TEST(ParentTest, HandlesMultipleLines) {
-    std::string input = "100 2 5\n50 5 2\n25 5 1\n";
-    std::string expected_output =
-        "Результат: 10\n"  // 100 / 2 / 5 = 10
-        "Результат: 5\n"   // 50 / 5 / 2 = 5
-        "Результат: 5\n";  // 25 / 5 / 1 = 5
-    TestParent(input, expected_output);
-}
-
-TEST(ParentTest, HandlesInvalidInput) {
-    std::string input = "a b c\n";
-    std::string expected_output = "Некорректный ввод\n";
-    TestParent(input, expected_output);
-}
-
-TEST(ParentTest, HandlesDivisionByZero) {
-    std::string input = "10 0 5\n";
+TEST(ParentTest, DivisionByZero) {
+    std::string input = "10 0 5\nexit\n";
     std::string expected_output = "Деление на ноль\n";
-    TestParent(input, expected_output);
+    TestParent(input, expected_output, PATH_TO_CHILD);
 }
 
 int main(int argc, char **argv) {

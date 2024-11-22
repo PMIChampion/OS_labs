@@ -1,44 +1,68 @@
+
 #include "parent.hpp"
+#include "utils.hpp"
+#include <iostream>
+#include <string>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <cstring>
+#include <semaphore.h>
+#include <fcntl.h>
 
-void ParentProcess(const char * pathToChild, std::istream & streamIn, std::ostream & streamOut){
+void ParentProcess(const char* pathToChild, std::istream& streamIn, std::ostream& streamOut) {
     constexpr auto shm_name = "/shared_memory";
-    size_t shm_size = 1024;
-    void* addr = CreateFileMapping(shm_name, shm_size);
-    char* shared_data = static_cast<char*>(addr);
+    constexpr size_t shm_size = 1024;
 
-    std::string all_lines;
-    std::cout << "Введите несколько строк, каждая содержит три числа (пустая строка для завершения ввода):\n";
-    while (true) {
+    char* shared_data = static_cast<char*>(CreateFileMapping(shm_name, shm_size));
+    if (shared_data == MAP_FAILED) {
+        perror("Parent: Ошибка создания общей памяти");
+        exit(EXIT_FAILURE);
+    }
+
+    sem_t* sem_child = sem_open("/sem_child", O_CREAT, 0666, 0);
+    sem_t* sem_parent = sem_open("/sem_parent", O_CREAT, 0666, 0);
+    if (sem_child == SEM_FAILED || sem_parent == SEM_FAILED) {
+        perror("Parent: Ошибка создания семафоров");
+        CloseFileMapping(shm_name, shared_data, shm_size);
+        exit(EXIT_FAILURE);
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("Parent: Ошибка fork");
+        CloseFileMapping(shm_name, shared_data, shm_size);
+        sem_close(sem_child);
+        sem_close(sem_parent);
+        sem_unlink("/sem_child");
+        sem_unlink("/sem_parent");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        execl(pathToChild, pathToChild, nullptr);
+        perror("Child: Ошибка exec");
+        exit(EXIT_FAILURE);
+    } else {
         std::string line;
-        std::getline(streamIn, line);
-        if (line.empty()) {
-            break;
-        }
-        all_lines += line + "\n";
-    }
+        while (true) {
+            std::cout << "Введите строку с тремя числами (или 'exit' для выхода):\n";
+            std::getline(streamIn, line);
 
-    if (all_lines.size() >= shm_size) {
-        std::cerr << "Не хватка памяти\n";
-        CloseFileMapping(shm_name, addr, shm_size);
-        exit(EXIT_FAILURE);
-    }
-    std::strncpy(shared_data, all_lines.c_str(), shm_size);
+            strncpy(shared_data, line.c_str(), shm_size);
 
-    pid_t pid = CreateChild();
-    if(pid == 0){
-        Exec(pathToChild);
-    }else if (pid > 0){
-        int status;
-        if (waitpid(pid, &status, 0) == -1) {
-            perror("Ошибка ожидания дочернего процесса");
-            CloseFileMapping(shm_name, addr, shm_size);
-            exit(EXIT_FAILURE);
+            sem_post(sem_child);
+
+            if (line == "exit") break;
+
+            sem_wait(sem_parent);
+
+            streamOut << shared_data << std::endl;
         }
-        streamOut << shared_data;
-        CloseFileMapping(shm_name, addr, shm_size);
-    }else{
-        perror("Дочерний процесс не создан");
-        CloseFileMapping(shm_name, addr, shm_size);
-        exit(EXIT_FAILURE);
+
+        waitpid(pid, nullptr, 0);
+
+        CloseFileMapping(shm_name, shared_data, shm_size);
+        sem_close(sem_child);
+        sem_close(sem_parent);
+        sem_unlink("/sem_child");
+        sem_unlink("/sem_parent");
     }
 }
