@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-// Объявления функций из библиотек
 extern "C" {
     int PrimeCount(int A, int B);
     float E(int x);
